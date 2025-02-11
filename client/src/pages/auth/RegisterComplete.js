@@ -47,10 +47,16 @@ const RegisterComplete = ({ history }) => {
             let user = auth.currentUser;
             console.log("User==>", user);
             console.log("Password =>", password);
-            await updatePasswordF(password);
-            const idTokenResult = getIdTokenResultF();
-            console.log("idTokenResult ==>", idTokenResult);
-            history.push("/");
+            await updatePasswordF(user, password)
+              .then((result) => {
+                console.log("Password updated sucessfully", result);
+              })
+              .catch((error) => {
+                console.log("Error occured while updating the password");
+              });
+            const idTokenResult = await user.getIdTokenResult(); // Fetch ID token result
+            console.log("Token:", idTokenResult.token);
+            // history.push("/");
           }
         })
         .catch((error) => {
